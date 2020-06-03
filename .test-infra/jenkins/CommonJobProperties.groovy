@@ -35,9 +35,11 @@ class CommonJobProperties {
       int defaultTimeout = 100,
       boolean allowRemotePoll = true,
       String jenkinsExecutorLabel =  'beam') {
+
+    context.disabled()
     // GitHub project.
     context.properties {
-      githubProjectUrl('https://github.com/apache/beam/')
+      githubProjectUrl('https://github.com/damgadbot/beam/')
     }
 
     // Set JDK version.
@@ -55,7 +57,7 @@ class CommonJobProperties {
     context.scm {
       git {
         remote {
-          github("apache/beam")
+          github("damgadbot/beam")
           // Single quotes here mean that ${ghprbPullId} is not interpolated and instead passed
           // through to Jenkins where it refers to the environment variable.
           refspec('+refs/heads/*:refs/remotes/origin/* ' +
