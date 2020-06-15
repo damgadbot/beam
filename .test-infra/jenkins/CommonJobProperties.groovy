@@ -143,6 +143,26 @@ class CommonJobProperties {
             completedStatus('FAILURE', '--none--')
             completedStatus('ERROR', '--none--')
           }
+
+          ghbrpBuildStatus([
+            new org.jenkinsci.plugins.ghprb.extensions.comments.GhprbBuildResultMessage('SUCCESS', successComment)
+//            ghprbBuildResultMessage {
+//              result('SUCCESS')
+//              message(successComment)
+//            },
+//            ghprbBuildResultMessage {
+//              result('FAILURE')
+//              message('--none--')
+//            },
+//            ghprbBuildResultMessage {
+//              result('ERROR')
+//              message('--none--')
+//            }
+            ])
+             ghprbCancelBuildsOnUpdate {
+               overrideGlobal(true)
+             }
+          
         }
 
               // The configure block gives access to the raw XML.
