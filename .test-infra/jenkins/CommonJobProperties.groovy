@@ -144,6 +144,36 @@ class CommonJobProperties {
             completedStatus('ERROR', '--none--')
           }
         }
+
+              // The configure block gives access to the raw XML.
+      // This is needed here because the ghprb DSL extension doesn't
+      // provide access to the credentials to use.
+      configure { node ->
+        def triggers = node / 'triggers'
+        // Iterate and find the right trigger node so that this
+        // doesn't depend on the version of the ghprb plugin.
+        triggers.children().each { trigger ->
+          if (trigger.name() == 'org.jenkinsci.plugins.ghprb.GhprbTrigger') {
+            // This adds the <gitHubAuthId/> tag with the pytorchbot credentials
+            def gitHubAuthId = trigger / 'gitHubAuthId'
+            gitHubAuthId.setValue(githubAuthIdValue)
+
+            def extensions = trigger / 'extensions'
+            if (!reportStatus) {
+              // Replace default extension with a single one that
+              // instructs ghprb to not set any commit status.
+              // We rely on the downstream jobs to do this.
+              def statusNode = { "org.jenkinsci.plugins.ghprb.extensions.status.${it}" }
+              extensions.remove(extensions / statusNode('GhprbSimpleStatus'))
+              extensions / statusNode('GhprbNoCommitStatus')
+            }
+
+            // Cancel PR builds when there is an update
+            def buildNode = { "org.jenkinsci.plugins.ghprb.extensions.build.${it}" }
+            extensions / buildNode('GhprbCancelBuildsOnUpdate')
+          }
+        }
+
       }
     }
   }
