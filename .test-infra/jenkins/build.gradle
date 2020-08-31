@@ -40,11 +40,11 @@ task generateMetricsReport {
       executable 'sh'
       args '-c', ". ${envdir}/bin/activate && tox -e py38-test -c ${toxConfigFilePath}"
     }
+    logger.info('Create metrics report file {}', generateMetricsReportPath)
     exec {
       executable 'sh'
       args '-c', ". ${envdir}/bin/activate && tox -e py38-generate-report -c ${toxConfigFilePath} -- --influx-db=${influxDb} --influx-host=${influxHost} --influx-port=${influxPort} --output-file=${generateMetricsReportPath}"
     }
-    logger.info('Create metrics report file {}', generateMetricsReportPath)
   }
   outputs.file "${generateMetricsReportPath}"
 }

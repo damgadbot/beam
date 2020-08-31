@@ -202,23 +202,25 @@ def generate_report(data, output_file):
   )
   template = env.get_template("Metrics_Report.template")
   with open(output_file, "w") as file:
-    file.write(template.render(headers=TABLE_FIELD_NAMES, metrics_data=data))
+    file.write("another test")
+    # file.write(template.render(headers=TABLE_FIELD_NAMES, metrics_data=data))
   print("{} saved.".format(output_file))
 
 
 def main():
   influx_host, influx_port, influx_db, output_file = parse_arguments()
 
-  client = InfluxDBClient(
-      host=influx_host,
-      port=influx_port,
-      database=influx_db,
-      username=INFLUXDB_USER,
-      password=INFLUXDB_USER_PASSWORD,
-  )
-
-  data = get_metrics_data(client, influx_db)
-  print_table(data)
+  # client = InfluxDBClient(
+  #     host=influx_host,
+  #     port=influx_port,
+  #     database=influx_db,
+  #     username=INFLUXDB_USER,
+  #     password=INFLUXDB_USER_PASSWORD,
+  # )
+  #
+  # data = get_metrics_data(client, influx_db)
+  # print_table(data)
+  data = None
   generate_report(data, output_file)
 
 
