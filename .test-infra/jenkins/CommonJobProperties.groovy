@@ -37,6 +37,7 @@ class CommonJobProperties {
       String jenkinsExecutorLabel = 'beam',
       boolean cleanWorkspace = true) {
     // GitHub project.
+    context.disabled()
     context.properties {
       githubProjectUrl('https://github.com/damgadbot/beam/')
     }
